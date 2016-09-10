@@ -4,11 +4,18 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
 var routes = require('./routes/index');
 // var users = require('./routes/users');
 var ejs = require('ejs');
 var app = express();
+
+//keyLemon 
+// var klapi = require("./src/klapi");
+// var api =  new klapi.KlAPI('cdyz', 'eo0hBQfeNPShglVDfH1ltc0qi3OQM2pfhUnY9lAMBjZvzU9w4XWjIk', 'https://klws.keylemon.com');
+
+// face detection tester
+var face = require('./faceDetection');
+face.faceDetect();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
