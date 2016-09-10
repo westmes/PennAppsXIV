@@ -30,7 +30,7 @@ router.get('/findface', function(req, res, next) {
   				console.log(photos[i].content.src);
   				photoURL.push(photos[i].content.src);
   			}
-  			console.log(JSON.stringfy(photoURL));
+  			//console.log(JSON.stringfy(photoURL));
 		})
   	})
 });
