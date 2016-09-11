@@ -9,10 +9,6 @@ var routes = require('./routes/index');
 var ejs = require('ejs');
 var app = express();
 
-//keyLemon 
-// var klapi = require("./src/klapi");
-// var api =  new klapi.KlAPI('cdyz', 'eo0hBQfeNPShglVDfH1ltc0qi3OQM2pfhUnY9lAMBjZvzU9w4XWjIk', 'https://klws.keylemon.com');
-
 // query tester
 // var tester = require('./sql');
 // tester.query();

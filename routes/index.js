@@ -4,6 +4,7 @@ var faceAPI = require('../src/faceAPI');
 // var missingList = require('../src/queryMissingList');
 var findMissing = require('../src/findMissing');
 var result = require('../src/result');
+var sql = require('../sql');
 
 const Picasa = require('picasa') ;
 const picasa = new Picasa();
@@ -27,12 +28,20 @@ router.get('/findface', function(req, res, next) {
 	res.send("find face");
 	var url = req.url;
 	var code = url.substring(15, url.length);
-  // var myMap = new Map();
 	picasa.getAccessToken(config, code, (error, accessToken) => {
   		// console.log(error, accessToken)
   		picasa.getPhotos(accessToken, null, (error, photos) => {
+        var i = 0;
         result.findMatchesInPhotos(photos, function(map) {
-
+            console.log("in js")
+            // console.log(map);
+            if (map && i == 0) {
+                // console.log(map)
+                sql.query(map, function(res, err){
+                    console.log(res);
+                })
+            }
+            i++;
         });
   			// console.log(error, photos[0].content.src);
         // missingList.queryMissingList(function(res) {
