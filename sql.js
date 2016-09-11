@@ -116,31 +116,36 @@ function iterator(list, cb) {
 	connection.connect(function(err){
 		var n = [];
 		for (var j in list) {
-			if (list[j] == undefined){
+			var h = list[j]
+			if (h == undefined || h == ""){
 				n.push('');
 				continue;
 			} else {
-				var fid = list[j].persistedFaceId;
+				var fid = h.persistedFaceId;
 				connection.query('SELECT * FROM MissingPerson WHERE fid = ?', [fid], function(err, result){
 					if (err) {
 						console.error('query error ' + err.stack);
 					} else {
-						if (result) {					
-							var r = JSON.stringify(list[j]);
-							r = r.substring(0, r.length - 1);
-							r = r + ',"name":"' + result[0].name + '",';
-							r = r + '"gender":"' + result[0].gender + '",';
-							r = r + '"lastseen":"' + result[0].lastseen + '",';
-							r = r + '"reporttime":"' + result[0].reporttime + '",';
-							r = r + '"status":"' + result[0].status + '",';
-							r = r + '"photo":"' + result[0].photo + '"}';
-							l = JSON.parse(r);
-							n.push(l);
+						if (result) {	
+							if (h !== undefined) {
+								var r = JSON.stringify(h);
+								r = r.substring(0, r.length - 1);
+								r = r + ',"name":"' + result[0].name + '",';
+								r = r + '"gender":"' + result[0].gender + '",';
+								r = r + '"lastseen":"' + result[0].lastseen + '",';
+								r = r + '"reporttime":"' + result[0].reporttime + '",';
+								r = r + '"status":"' + result[0].status + '",';
+								r = r + '"photo":"' + result[0].photo + '"}';
+								l = JSON.parse(r);
+								n.push(l);
+							} else {
+
+							}				
 							if (n.length === list.length){
 								return cb(n);
 							}
 						} else {
-							n.push('');
+							//n.push('');
 						}	
 					}
 				});

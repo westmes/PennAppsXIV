@@ -16,63 +16,42 @@ const config = {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-
-	const authURL = picasa.getAuthURL(config);
-	res.redirect(authURL);
-	// faceAPI.postCode();
+  res.render('index', { title: 'frontpage'});
 });
+
+router.post('/getauth', function(req, res, next){
+  const authURL = picasa.getAuthURL(config);
+  res.redirect(authURL);
+})
 
 
 /* redirect to the next page*/
 router.get('/findface', function(req, res, next) {
-	res.send("find face");
 	var url = req.url;
 	var code = url.substring(15, url.length);
 	picasa.getAccessToken(config, code, (error, accessToken) => {
-  		// console.log(error, accessToken)
   		picasa.getPhotos(accessToken, null, (error, photos) => {
         var i = 0;
+        var arr = [];
         result.findMatchesInPhotos(photos, function(map) {
             console.log("in js")
-            // console.log(map);
             if (map && i == 0) {
-                // console.log(map)
-                sql.query(map, function(res, err){
-                    console.log(res);
+                sql.query(map, function(ans, err){
+                    console.log(ans);
+                    console.log("+++++++++++++++++++++");
+                    arr.push(ans);
                 })
             }
             i++;
         });
-  			// console.log(error, photos[0].content.src);
-        // missingList.queryMissingList(function(res) {
-        //     // console.log(JSON.stringify(res));
-        //     var list = JSON.parse(res);
-        //     var arr = list["persistedFaces"];
-        //     for (var i=0; i<arr.length; i++) {
-        //       var term = arr[i];
-        //       pid = term["persistedFaceId"];
-              
-        //     }
-
-            // var photoURL = [];
-            // for (var i in photos) {
-            //   // console.log(photos[i].content.src);
-            //   // photoURL.push(photos[i].content.src);
-
-            //   findMatches(photos[i].content.src);
-            // }
-        // })
-        // for (var i in photos) {
-        //   // console.log(photos[i].content.src);
-        //   findMatches(photos[i].content.src, myMap);
-        // }
-
-  			// console.log(JSON.stringify(photoURL));
+	        setTimeout(function() {
+	        	console.log("%%%%%%%%%%%%%%");
+	        	console.log(arr);
+	        	res.render('facefound', {results: arr})
+	        }, 15000);
 		})
   	})
 
 });
-
-
 
 module.exports = router;

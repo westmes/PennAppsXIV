@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+<meta charset="UTF-8">
+
+<!doctype html>
+<html lang="en">
+<meta charset="UTF-8">
+
+<head>
+	<title>Result Page</title>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+	<link href='https://fonts.googleapis.com/css?family=Roboto:300,400,700' rel='stylesheet' type='text/css'>
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<style>
+		body {
+		  height: 100%;
+		  background-color: #333;
+		  color: #fff;
+  		  text-align: center;
+  		  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+		}
+
+		.infoForm {
+			color: #999;
+		}
+	</style>
+	<script>
+		var drawRect = function(xCor, yCor) {
+		  //Position parameters used for drawing the rectangle
+			var x = xCor;
+			var y = yCor;
+			var width = 50;
+			var height = 50;
+
+			var canvas = document.createElement('canvas'); //Create a canvas element
+			//Set canvas width/height
+			canvas.style.width='100%';
+			canvas.style.height='100%';
+			//Set canvas drawing area width/height
+			canvas.width = window.innerWidth;
+			canvas.height = window.innerHeight;
+			//Position canvas
+			canvas.style.position='absolute';
+			canvas.style.left=0;
+			canvas.style.top=0;
+			canvas.style.zIndex=100000;
+			canvas.style.pointerEvents='none'; //Make sure you can click 'through' the canvas
+			document.body.appendChild(canvas); //Append canvas to body element
+			var context = canvas.getContext('2d');
+			//Draw rectangle
+			context.rect(x, y, width, height);
+			context.strokeStyle = 'red';
+      		context.stroke();
+		}
+	</script>
+</head>
+<body>
+	<h1 class = "container text-center"> Possible Missing People</h1>
+	<section class = "container col-md-offset-2">
+		<% var k = 0 %>
+			<% for (var i = 0; i < results.length; i++) { %>
+			<% var photos = results[i] %>
+			<% for (var client of photos.keys()) { %>
+			<% console.log("client: " + JSON.stringify(photos.get(client))) %>
+				<% for (var j = 0; j < photos.get(client).length; j++) { %>
+					<% if (photos.get(client)[j] != '') { %>
+						<% var facePos = photos.get(client)[j].faceRectangle %>
+						<% console.log("facePostLeft" + facePos.left) %>
+						<% var name = photos.get(client)[j].name %>
+						<% var gender = photos.get(client)[j].gender %>
+						<% var lastseen = photos.get(client)[j].lastseen %>
+						<% var reporttime = photos.get(client)[j].reporttime %>
+						<% var status = photos.get(client)[j].status %>
+						<div class = "row" id = "resultRow" style = "padding-top: 20px">
+						<div class = "col-md-8 text-center">
+							<div class = "row">
+								<div class = "col-md-4">
+									<img class = "col-md-12 centered" id="image<%= k %>" src = <%= client %> />
+									<script>
+										var photoId = '#image<%= k %>'
+									    var pos = $(photoId).offset()
+									    var facePosLeft = <%= facePos.left %>
+									    var facePosTop = <%= facePos.top %>
+										$(photoId).load(drawRect(facePosLeft, facePosTop));
+										//window.onload = drawRect(pos.left+facePosLeft, pos.top+facePosTop)
+									</script>
+									<% k++ %>
+									<% console.log(k) %>
+								</div>
+								<div class = "col-md-4">
+									<img class = "col-md-12 centered" src = <%= photos.get(client)[j].photo %> />
+								</div>	
+								<div class = "col-md-4">
+									<table class="table">
+										<tbody>
+											<tr>
+												<th scope="row"> Name </th>
+												<td> <%= name %> </td>
+											</tr>
+											<tr>
+												<th scope="row"> Gender </th>
+												<td> <%= gender %> </td>
+											</tr>
+											<tr>
+												<th scope="row"> Last seen </th>
+												<td> <%= lastseen %> </td>
+											</tr>
+											<tr>
+												<th scope="row"> Report Date </th>
+												<td> <%= reporttime %> </td>
+											</tr>
+											<tr>
+												<th scope="row"> Status </th>
+												<td> <%= status %> </td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+							<div class = "row col-md-offset-1 text-center">
+								<button type="submit" class="btn btn-primary col-md-6" style="margin-top: 5px">Wrong Match</button>
+							</div>
+							<div class = "row col-md-offset-1 text-center">
+								<button type="submit" class="btn btn-danger col-md-6" id="report-btn" style="margin-top: 5px">Report Missing Person</button>
+									<script>
+										$('.btn-danger').click(function() {
+											$(this).html('Thanks for helping us to find the missing person!')
+											$(this).removeClass('btn-danger')
+											$(this).addClass('btn-success')
+										})
+									</script>
+							</div>
+						</div>
+					</div>
+				<% } %>
+					
+			<% } %>
+		<% } %>
+		<% } %>
+	</section>
+</body>
+</html>
