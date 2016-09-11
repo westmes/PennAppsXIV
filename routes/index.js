@@ -28,10 +28,10 @@ router.get('/findface', function(req, res, next) {
 	picasa.getAccessToken(config, code, (error, accessToken) => {
   		console.log(error, accessToken)
   		picasa.getPhotos(accessToken, null, (error, photos) => {
-  			console.log(error, photos[0].content.src);
+  			// console.log(error, photos[0].content.src);
   			var photoURL = [];
   			for (var i in photos) {
-  				console.log(photos[i].content.src);
+  				// console.log(photos[i].content.src);
   				photoURL.push(photos[i].content.src);
   			}
   			//console.log(JSON.stringfy(photoURL));

@@ -13,9 +13,9 @@ var app = express();
 // var klapi = require("./src/klapi");
 // var api =  new klapi.KlAPI('cdyz', 'eo0hBQfeNPShglVDfH1ltc0qi3OQM2pfhUnY9lAMBjZvzU9w4XWjIk', 'https://klws.keylemon.com');
 
-// face detection tester
-var face = require('./faceDetection');
-face.faceDetect();
+// query tester
+// var tester = require('./sql');
+// tester.query();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
